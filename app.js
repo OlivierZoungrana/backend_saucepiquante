@@ -4,8 +4,10 @@ const bodyParser = require('body-parser')
 const app = express();
 const stuffRoutes = require('./routes/stuff')
 const userRoutes = require('./routes/user')
-const multer = require('../backEnd/images/multer-config')
+const sauceRoutes= require('./routes/sauce')
+const multer = require('./middleware/multer-config')
 const mongoose = require('mongoose')
+const path = require('path')
 
 mongoose.connect('mongodb+srv://synthejazz:Open1988@cluster0.cy1mk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -21,29 +23,11 @@ mongoose.connect('mongodb+srv://synthejazz:Open1988@cluster0.cy1mk.mongodb.net/m
     next();
   });
   
-app.use('/api/sauce',(req, res, next) =>{
-
-    const stuff =[
-        {
-            userId: 'rtyuiio',
-            name: 'jeune',
-            manufacturer: 'azert',
-            description :'erty',
-            imageUrl: '',
-            heat: 1,
-            likes: 2,
-            dislikes: 3,
-            usersLiked: ['azert','quert'],
-            usersDisliked:['azert','quert'] 
-        }
-    ]
-
-res.status(200).json(stuff)
-
-})
 
 
 app.use(bodyParser.json())
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes)
+app.use('/api', sauceRoutes)
 module.exports= app;
