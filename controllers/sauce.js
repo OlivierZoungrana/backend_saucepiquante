@@ -1,5 +1,5 @@
 const ModelSauce = require('../models/ModelSauce')
-// Faut bosser petit :p
+// Faut bosser petit :p          
 exports.createSauce = (req, res, next) => {
     try{
       const sauceObject = JSON.parse(req.body.sauce)
@@ -74,36 +74,37 @@ exports.displaySauceById = (req, res, next) => {
     );
   };
 
-exports.likeOrDislikeSauce =(req, res, next)=>{
+exports.likeOrDislikeSauce = async (req, res, next)=>{
 
-  if(req.body.like===1){
-
+  let sauce = await ModelSauce.findById(req.params.id)
+  if(req.body.like===1 && !sauce.usersLiked.includes(req.body.userId)){
+      
     ModelSauce.updateOne({_id: req.params.id}, {
-      $inc : {likes:req.body.like++},
+      $inc : {likes:1},
       $push : {usersLiked:req.body.userId}
     })
     .then(()=>res.status(200).json({message: 'like ajouté !'}))
     .catch(()=> res.status(400).json({error}))
-  }else if(req.body.like===-1){
+  }else if(req.body.like===-1 && !sauce.usersDisliked.includes(req.body.userId)){
 
     ModelSauce.updateOne({
       _id:req.params.id}, {
-        $inc: {dislikes: (req.body.like++)*-1},
+        $inc: {dislikes: 1},
         $push: {usersDisliked:req.body.userId}
 
     })
     .then(()=> res.status(200).json({message:'dislike ajouté!'}))
     .catch(error => res.status(400).json({error}))
-  }else{
+  }else if(req.body.like===0){
 
     ModelSauce.findOne({_id: req.params.id})
       .then(sauce => {
 
-        if(sauce.usersDisliked.includes(req.body.userId)){
+        if(sauce.usersLiked.includes(req.body.userId)){
 
           ModelSauce.updateOne({
             _id: req.params.id}, {
-              $pull: {usersDisliked: req.body.userId},
+              $pull: {usersLiked: req.body.userId},
               $inc : {likes: -1}})
             .then(()=>{res.status(200).json({message:'like supprimé !'})})
             .catch(error => res.status(400).json({error}))
