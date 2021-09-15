@@ -8,7 +8,6 @@ const sauceRoutes= require('./routes/sauce')
 const multer = require('./middleware/multer-config')
 const mongoose = require('mongoose')
 const path = require('path')
-
 mongoose.connect('mongodb+srv://synthejazz:Open1988@cluster0.cy1mk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })

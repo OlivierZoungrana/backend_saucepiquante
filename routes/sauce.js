@@ -11,7 +11,7 @@ const multer = require('../middleware/multer-config')
  router.delete('/sauces/:id',auth, sauceCtrl.deleteSauce)
  router.get('/sauces/:id',auth, sauceCtrl.displaySauceById)
  router.get('/sauces',auth, sauceCtrl.displaySauce)
-router.post('/sauces/:id/like', auth, sauceCtrl.likeSauce)
+router.post('/sauces/:id/like', auth, sauceCtrl.likeOrDislikeSauce)
 
   
 

@@ -74,7 +74,7 @@ exports.displaySauceById = (req, res, next) => {
     );
   };
 
-exports.likeSauce =(req, res, next)=>{
+exports.likeOrDislikeSauce =(req, res, next)=>{
 
   if(req.body.like===1){
 
